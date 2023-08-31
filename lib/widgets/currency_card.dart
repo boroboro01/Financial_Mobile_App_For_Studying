@@ -23,6 +23,7 @@ class DiagonalClipper extends CustomClipper<Path> {
 }
 
 class CurrencyCard extends StatelessWidget {
+  final double order;
   final String name, code, amount;
   final IconData icon;
   final bool isInverted;
@@ -31,6 +32,7 @@ class CurrencyCard extends StatelessWidget {
 
   const CurrencyCard({
     super.key,
+    required this.order,
     required this.name,
     required this.code,
     required this.amount,
@@ -39,73 +41,76 @@ class CurrencyCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => ClipPath(
-        clipper: DiagonalClipper(),
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            color: isInverted ? Colors.white : blackColor,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(40),
-              bottomRight: Radius.circular(20),
-              bottomLeft: Radius.circular(40),
+  Widget build(BuildContext context) => Transform.translate(
+        offset: Offset(0, order * -20),
+        child: ClipPath(
+          clipper: DiagonalClipper(),
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              color: isInverted ? Colors.white : blackColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(40),
+                bottomRight: Radius.circular(20),
+                bottomLeft: Radius.circular(40),
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(
-              30,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(
+            child: Padding(
+              padding: const EdgeInsets.all(
+                30,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                          color: isInverted ? blackColor : Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            amount,
+                            style: TextStyle(
+                              color: isInverted ? blackColor : Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            code,
+                            style: TextStyle(
+                              color: isInverted ? blackColor : Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Transform.scale(
+                    scale: 2.1,
+                    child: Transform.translate(
+                      offset: const Offset(-6, 13),
+                      child: Icon(
+                        icon,
                         color: isInverted ? blackColor : Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
+                        size: 78,
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          amount,
-                          style: TextStyle(
-                            color: isInverted ? blackColor : Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          code,
-                          style: TextStyle(
-                            color: isInverted ? blackColor : Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Transform.scale(
-                  scale: 2.1,
-                  child: Transform.translate(
-                    offset: const Offset(-6, 13),
-                    child: Icon(
-                      icon,
-                      color: isInverted ? blackColor : Colors.white,
-                      size: 78,
-                    ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
